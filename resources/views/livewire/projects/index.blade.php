@@ -14,7 +14,6 @@
         </div>
     @endif
 
-    {{-- Create / edit form --}}
     <form wire:submit="save" class="space-y-4 rounded-xl border bg-white p-6">
         <h2 class="font-semibold">
             {{ $editingId ? 'Edit project' : 'Create a new project' }}
@@ -55,7 +54,6 @@
         </div>
     </form>
 
-    {{-- Project list --}}
     <div class="space-y-4">
         @forelse ($projects as $project)
             @php
