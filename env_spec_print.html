@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>InBizTrack - Environment & Dependencies Specification</title>
+  <style>
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      color: #1e293b;
+      background-color: #ffffff;
+      width: 210mm;
+      height: 297mm;
+      max-height: 297mm;
+      padding: 11mm 13mm;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      overflow: hidden;
+      font-size: 11px;
+      line-height: 1.35;
+    }
+
+    /* Header */
+    .header {
+      border-bottom: 2.5px solid #4f46e5;
+      padding-bottom: 9px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .header-title-box h1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: #1e1b4b;
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .header-title-box h1 span {
+      color: #4f46e5;
+    }
+    .header-title-box p {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 3px;
+    }
+    .header-badges {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 5px;
+    }
+    .pill {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .pill-green {
+      background-color: #ecfdf5;
+      color: #047857;
+      border: 1px solid #a7f3d0;
+    }
+    .pill-indigo {
+      background-color: #eef2ff;
+      color: #4338ca;
+      border: 1px solid #c7d2fe;
+    }
+
+    /* Content Area */
+    .content-area {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex: 1;
+      margin-top: 10px;
+      margin-bottom: 8px;
+    }
+
+    .section-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 9px 12px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 7px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .section-header h2 {
+      font-size: 11.5px;
+      font-weight: 800;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .section-header .tag {
+      font-size: 9.5px;
+      font-weight: 700;
+      color: #64748b;
+      background: #ffffff;
+      padding: 1.5px 7px;
+      border-radius: 4px;
+      border: 1px solid #cbd5e1;
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 10px;
+    }
+    th {
+      text-align: left;
+      font-size: 9px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      padding: 4px 6px;
+      background: #edf2f7;
+      border-radius: 3px;
+    }
+    td {
+      padding: 4px 6px;
+      border-bottom: 1px solid #f1f5f9;
+      color: #1e293b;
+      vertical-align: middle;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .bold-cell {
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .version-badge {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 9.5px;
+      font-weight: 700;
+      padding: 1.5px 6px;
+      background: #e2e8f0;
+      color: #0f172a;
+      border-radius: 4px;
+      display: inline-block;
+    }
+    .version-badge.highlight {
+      background: #e0e7ff;
+      color: #3730a3;
+      border: 1px solid #c7d2fe;
+    }
+    .version-badge.green {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+
+    /* Two column split for Backend & Frontend */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 10px;
+    }
+
+    /* Extension list */
+    .ext-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 2px;
+    }
+    .ext-chip {
+      font-family: ui-monospace, monospace;
+      font-size: 9.5px;
+      font-weight: 600;
+      color: #0369a1;
+      background: #e0f2fe;
+      border: 1px solid #bae6fd;
+      padding: 1.5px 6px;
+      border-radius: 4px;
+    }
+
+    /* Architecture Grid */
+    .arch-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .arch-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 8px 10px;
+    }
+    .arch-card h4 {
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #1e293b;
+      margin-bottom: 3px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .arch-card p {
+      font-size: 9.5px;
+      color: #475569;
+      line-height: 1.4;
+    }
+    .arch-card code {
+      font-family: ui-monospace, monospace;
+      font-size: 9px;
+      background: #f1f5f9;
+      padding: 1px 4px;
+      border-radius: 3px;
+      color: #0f172a;
+    }
+
+    /* Status Metrics Grid */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 9px;
+    }
+    .summary-item {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 7px;
+      padding: 8px 10px;
+      text-align: center;
+    }
+    .summary-item .num {
+      font-size: 15px;
+      font-weight: 800;
+      color: #4338ca;
+      letter-spacing: -0.3px;
+    }
+    .summary-item .label {
+      font-size: 9.5px;
+      color: #64748b;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-top: 2px;
+      letter-spacing: 0.3px;
+    }
+
+    /* Footer */
+    .footer {
+      border-top: 1px solid #e2e8f0;
+      padding-top: 7px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 9.5px;
+      color: #94a3b8;
+    }
+    .footer strong {
+      color: #475569;
+    }
+    .footer code {
+      font-family: ui-monospace, monospace;
+      font-size: 9px;
+      color: #475569;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="header-title-box">
+      <h1>InBizTrack <span>Environment & Tech Stack</span></h1>
+      <p>Technical Assessment Stack & Dependency Specification | Mini Project & Task Management System</p>
+    </div>
+    <div class="header-badges">
+      <span class="pill pill-green">&#10003; 0 Audit Vulnerabilities</span>
+      <span class="pill pill-indigo">Laravel 12 + Livewire 3.8 + MySQL</span>
+    </div>
+  </div>
+
+  <div class="content-area">
+
+    <!-- Section 1: System Runtime -->
+    <div class="section-card">
+      <div class="section-header">
+        <h2>1. System & Environment Runtime</h2>
+        <span class="tag">Host Environment</span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 20%;">Component</th>
+            <th style="width: 22%;">Installed Version</th>
+            <th style="width: 26%;">Assessment Requirement</th>
+            <th style="width: 32%;">Status / Verification</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="bold-cell">PHP</td>
+            <td><span class="version-badge highlight">8.2.12</span></td>
+            <td>PHP 8.3+ (8.2 works with L12)</td>
+            <td>&#10003; Compatible (CLI ZTS VC2019 x64)</td>
+          </tr>
+          <tr>
+            <td class="bold-cell">Composer</td>
+            <td><span class="version-badge">2.8.10</span></td>
+            <td>Composer 2.x</td>
+            <td>&#10003; Active & configured</td>
+          </tr>
+          <tr>
+            <td class="bold-cell">Node.js / npm</td>
+            <td><span class="version-badge highlight">v22.17.1</span> / <span class="version-badge">11.17.0</span></td>
+            <td>Node.js 20+</td>
+            <td>&#10003; Active modern runtime</td>
+          </tr>
+          <tr>
+            <td class="bold-cell">MySQL / MariaDB</td>
+            <td><span class="version-badge highlight">10.4.32-MariaDB</span></td>
+            <td>MySQL 5.7+ / MariaDB</td>
+            <td>&#10003; Port 3306 (DB: <code>inbiztrack</code>)</td>
+          </tr>
+          <tr>
+            <td class="bold-cell">Git</td>
+            <td><span class="version-badge">2.49.0</span></td>
+            <td>Git version control</td>
+            <td>&#10003; Windows 64-bit client</td>
+          </tr>
+          <tr>
+            <td class="bold-cell">PHP Extensions</td>
+            <td colspan="3">
+              <div class="ext-chips">
+                <span class="ext-chip">&#10003; pdo_mysql</span>
+                <span class="ext-chip">&#10003; mbstring</span>
+                <span class="ext-chip">&#10003; openssl</span>
+                <span class="ext-chip">&#10003; fileinfo</span>
+                <span class="ext-chip">&#10003; pdo_sqlite (testing)</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Section 2 & 3: Two Column Grid -->
+    <div class="two-col">
+
+      <!-- Backend Column -->
+      <div class="section-card">
+        <div class="section-header">
+          <h2>2. Backend Packages (Composer)</h2>
+          <span class="tag">composer.lock</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 44%;">Package</th>
+              <th style="width: 24%;">Version</th>
+              <th style="width: 32%;">Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="bold-cell">laravel/framework</td>
+              <td><span class="version-badge highlight">12.72.0</span></td>
+              <td>Core MVC Framework</td>
+            </tr>
+            <tr>
+              <td class="bold-cell">livewire/livewire</td>
+              <td><span class="version-badge green">3.8.11</span></td>
+              <td>Patched (^3.8, CVE free)</td>
+            </tr>
+            <tr>
+              <td class="bold-cell">laravel/tinker</td>
+              <td><span class="version-badge">2.11.1</span></td>
+              <td>Interactive REPL</td>
+            </tr>
+            <tr>
+              <td class="bold-cell">phpunit/phpunit</td>
+              <td><span class="version-badge">11.5.58</span></td>
+              <td>Automated Testing</td>
+            </tr>
+            <tr>
+              <td class="bold-cell">fakerphp/faker</td>
+              <td><span class="version-badge">1.24.1</span></td>
+              <td>Data Factories / Seeds</td>
+            </tr>
+            <tr>
+              <td class="bold-cell">laravel/pint</td>
+              <td><span class="version-badge">1.30.4</span></td>
+              <td>Code Style Fixer</td>
+            </tr>
+            <tr>
+              <td class="bold-cell">laravel/pail</td>
+              <td><span class="version-badge">1.3.0</span></td>
+              <td>Real-time Tail Logger</td>
+            </tr>
+            <tr>
+              <td class="bold-cell">laravel/sail</td>
+              <td><span class="version-badge">1.70.0</span></td>
+              <td>Docker Environment</td>
+            </tr>
+            <tr>
+              <td class="bold-cell">mockery/mockery</td>
+              <td><span class="version-badge">1.6.15</span></td>
+              <td>Test Mock Objects</td>
+            </tr>
+            <tr>
+              <td class="bold-cell">nunomaduro/collision</td>
+              <td><span class="version-badge">8.9.6</span></td>
+              <td>CLI Error Reporting</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Frontend Column -->
+      <div class="section-card">
+        <div class="section-header">
+          <h2>3. Frontend & Build (npm)</h2>
+          <span class="tag">package.json</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 44%;">Package</th>
+              <th style="width: 24%;">Version</th>
+              <th style="width: 32%;">Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="bold-cell">tailwindcss</td>
+              <td><span class="version-badge highlight">4.3.5</span></td>
+              <td>Utility CSS Engine</td>
+            </tr>
+            <tr>
+              <td class="bold-cell">@tailwindcss/vite</td>
+              <td><span class="version-badge highlight">4.3.5</span></td>
+              <td>Official Vite Plugin</td>
+            </tr>
+            <tr>
+              <td class="bold-cell">vite</td>
+              <td><span class="version-badge">7.3.8</span></td>
+              <td>Asset Bundler & HMR</td>
+            </tr>
+            <tr>
+              <td class="bold-cell">laravel-vite-plugin</td>
+              <td><span class="version-badge">2.1.0</span></td>
+              <td>Vite Laravel Bridge</td>
+            </tr>
+            <tr>
+              <td class="bold-cell">axios</td>
+              <td><span class="version-badge">1.21.1</span></td>
+              <td>HTTP Client</td>
+            </tr>
+            <tr>
+              <td class="bold-cell">concurrently</td>
+              <td><span class="version-badge">9.2.5</span></td>
+              <td>Multi-script Runner</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <!-- Database & Security config note -->
+        <div style="margin-top: 8px; padding-top: 7px; border-top: 1px dashed #cbd5e1;">
+          <h3 style="font-size: 10px; font-weight: 800; color: #475569; text-transform: uppercase; margin-bottom: 4px;">
+            Database & Security Settings
+          </h3>
+          <div style="font-size: 9.5px; color: #334155; line-height: 1.55;">
+            <div>&bull; <strong>Main Database:</strong> MySQL / MariaDB (<code>inbiztrack</code>)</div>
+            <div>&bull; <strong>Testing Database:</strong> SQLite In-Memory (<code>:memory:</code>)</div>
+            <div>&bull; <strong>Livewire Constraint:</strong> <code>^3.8.11</code> (patched CVE-2026-81887)</div>
+            <div>&bull; <strong>Composer Security:</strong> Verified clean (0 advisories)</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Section 4: Architecture & Business Logic -->
+    <div class="section-card">
+      <div class="section-header">
+        <h2>4. Core Application Architecture & Assessment Rules</h2>
+        <span class="tag">Implementation</span>
+      </div>
+      <div class="arch-grid">
+        <div class="arch-card">
+          <h4>&#128193; Project Management</h4>
+          <p>Full CRUD on <code>/projects</code>. Displays dynamic progress badge &amp; counter (<code>X/Y Tasks Completed</code>). Validates required project name and optional description.</p>
+        </div>
+        <div class="arch-card">
+          <h4>&#9989; Task Management</h4>
+          <p>Full reactive CRUD on <code>/projects/{id}</code>. Instant checkbox toggle with visual strikethrough, inline title editing, and deletion without page reload.</p>
+        </div>
+        <div class="arch-card">
+          <h4>&#128683; Delete Business Logic</h4>
+          <p>Projects with uncompleted tasks cannot be deleted. Shows clear error: <em>"Cannot delete project: There are X uncompleted tasks."</em></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section 5: Metrics Summary -->
+    <div class="summary-grid">
+      <div class="summary-item">
+        <div class="num">12.72.0</div>
+        <div class="label">Laravel Version</div>
+      </div>
+      <div class="summary-item">
+        <div class="num">3.8.11</div>
+        <div class="label">Livewire (Secure)</div>
+      </div>
+      <div class="summary-item">
+        <div class="num">4.3.5</div>
+        <div class="label">Tailwind CSS</div>
+      </div>
+      <div class="summary-item">
+        <div class="num">0</div>
+        <div class="label">Audit Vulnerabilities</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div>
+      Project: <strong>inbiztrack</strong> &bull; Location: <code>C:\Users\AmashaKThenuwara\Desktop\inbiztrack</code>
+    </div>
+    <div>
+      Generated: <strong>November 17, 2026</strong> &bull; Technical Assessment: Intern Software Developer
+    </div>
+  </div>
+
+</body>
+</html>
