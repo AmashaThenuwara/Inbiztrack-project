@@ -17,7 +17,6 @@ class Project extends Model
         return $this->hasMany(Task::class);
     }
 
-    // Used by the delete rule
     public function incompleteTasksCount(): int
     {
         return $this->tasks()->where('is_completed', false)->count();

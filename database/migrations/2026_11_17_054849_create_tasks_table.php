@@ -10,10 +10,7 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
-
-            // Deleting a project also deletes its tasks
             $table->foreignId('project_id')->constrained()->cascadeOnDelete();
-
             $table->string('title');
             $table->boolean('is_completed')->default(false);
             $table->timestamps();

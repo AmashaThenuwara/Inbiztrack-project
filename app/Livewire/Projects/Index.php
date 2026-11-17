@@ -27,13 +27,12 @@ class Index extends Component
         return ['name.required' => 'Please enter a project name.'];
     }
 
-    // Create a new project, or update the one being edited
     public function save(): void
     {
         $this->reset('successMessage', 'errorMessage');
 
         $data = $this->validate();
-        $data['description'] = $data['description'] ?: null; // '' -> NULL
+        $data['description'] = $data['description'] ?: null;
 
         if ($this->editingId) {
             Project::findOrFail($this->editingId)->update($data);
@@ -58,7 +57,6 @@ class Index extends Component
         $this->resetValidation();
     }
 
-    // Business rule: a project with incomplete tasks cannot be deleted
     public function deleteProject(int $id): void
     {
         $this->reset('successMessage', 'errorMessage');
@@ -75,7 +73,7 @@ class Index extends Component
             return;
         }
 
-        $project->delete(); // its completed tasks are deleted by the foreign key
+        $project->delete();
 
         if ($this->editingId === $id) {
             $this->resetForm();

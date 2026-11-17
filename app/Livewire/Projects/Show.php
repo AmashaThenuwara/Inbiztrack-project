@@ -28,7 +28,6 @@ class Show extends Component
             ['newTitle.required' => 'Task title cannot be empty.']
         );
 
-        // Created through the relationship: project_id is set automatically
         $this->project->tasks()->create(['title' => trim($this->newTitle)]);
 
         $this->reset('newTitle');
@@ -36,7 +35,6 @@ class Show extends Component
 
     public function toggleTask(int $taskId): void
     {
-        // Only tasks of THIS project can be found
         $task = $this->project->tasks()->findOrFail($taskId);
 
         $task->update(['is_completed' => ! $task->is_completed]);
