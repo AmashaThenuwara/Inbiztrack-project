@@ -10,26 +10,26 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         Project::create([
-            'name' => 'Manufacturing ERP System',
-            'description' => 'Inventory, purchasing and sales for a packaging factory.',
+            'name' => 'Fintech Payment Gateway Integration',
+            'description' => 'Secure payment processing API with merchant dashboard and webhooks.',
         ])->tasks()->createMany([
-            ['title' => 'Design database', 'is_completed' => true],
-            ['title' => 'Build login module', 'is_completed' => true],
-            ['title' => 'Create inventory API', 'is_completed' => false],
-            ['title' => 'Build inventory screens', 'is_completed' => false],
+            ['title' => 'Setup OAuth2 authentication and API tokens', 'is_completed' => true],
+            ['title' => 'Implement payment webhook listener', 'is_completed' => true],
+            ['title' => 'Build transaction reconciliation report', 'is_completed' => false],
+            ['title' => 'Integrate refund processing workflow', 'is_completed' => false],
         ]);
 
         Project::create([
-            'name' => 'Insurance Management Portal',
-            'description' => 'Policies and claims portal for an insurance company.',
+            'name' => 'Healthcare Patient Booking Portal',
+            'description' => 'Online appointment scheduling and doctor availability calendar.',
         ])->tasks()->createMany([
-            ['title' => 'Policy module', 'is_completed' => true],
-            ['title' => 'Claims dashboard', 'is_completed' => true],
+            ['title' => 'Configure automated SMS appointment reminders', 'is_completed' => true],
+            ['title' => 'Design doctor availability calendar view', 'is_completed' => true],
         ]);
 
         Project::create([
-            'name' => 'Company Portfolio Website',
-            'description' => 'Marketing website. Tasks not planned yet.',
+            'name' => 'Cloud Infrastructure Migration',
+            'description' => 'Containerizing services and migrating staging cluster to Kubernetes.',
         ]);
     }
 }
