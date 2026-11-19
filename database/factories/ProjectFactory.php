@@ -11,6 +11,7 @@ class ProjectFactory extends Factory
         return [
             'name' => ucwords(fake()->words(3, true)),
             'description' => fake()->sentence(10),
+            'date' => fake()->optional()->date(),
         ];
     }
 }

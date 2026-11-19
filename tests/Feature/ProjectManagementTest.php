@@ -17,10 +17,14 @@ class ProjectManagementTest extends TestCase
     {
         Livewire::test(Index::class)
             ->set('name', 'Manufacturing ERP')
+            ->set('description', 'Initial rollout')
+            ->set('date', '2026-11-20')
             ->call('save')
             ->assertHasNoErrors();
 
-        $this->assertDatabaseHas('projects', ['name' => 'Manufacturing ERP']);
+        $project = Project::where('name', 'Manufacturing ERP')->firstOrFail();
+        $this->assertSame('Initial rollout', $project->description);
+        $this->assertSame('2026-11-20', $project->date->format('Y-m-d'));
     }
 
     public function test_project_name_is_required(): void
@@ -35,14 +39,33 @@ class ProjectManagementTest extends TestCase
 
     public function test_a_project_can_be_updated(): void
     {
-        $project = Project::factory()->create(['name' => 'Old name']);
+        $project = Project::factory()->create([
+            'name' => 'Old name',
+            'date' => '2026-11-01',
+        ]);
 
         Livewire::test(Index::class)
             ->call('editProject', $project->id)
+            ->assertSet('date', '2026-11-01')
             ->set('name', 'New name')
+            ->set('date', '2026-11-25')
             ->call('save');
 
-        $this->assertDatabaseHas('projects', ['id' => $project->id, 'name' => 'New name']);
+        $project->refresh();
+        $this->assertSame('New name', $project->name);
+        $this->assertSame('2026-11-25', $project->date->format('Y-m-d'));
+    }
+
+    public function test_project_list_displays_project_date(): void
+    {
+        Project::factory()->create([
+            'name' => 'Project Alpha',
+            'date' => '2026-11-20',
+        ]);
+
+        Livewire::test(Index::class)
+            ->assertSee('Project Alpha')
+            ->assertSee('Nov 20, 2026');
     }
 
     public function test_list_shows_completed_and_total_tasks(): void

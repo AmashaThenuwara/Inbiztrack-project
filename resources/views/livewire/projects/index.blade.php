@@ -50,6 +50,17 @@
                 @enderror
             </div>
 
+            <div>
+                <label for="date" class="mb-1 block text-sm font-medium text-slate-700">
+                    Date
+                </label>
+                <input id="date" type="date" wire:model="date"
+                       class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500">
+                @error('date')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
+            </div>
+
             <div class="flex gap-3 pt-2">
                 <button type="submit"
                         class="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition">
@@ -95,6 +106,14 @@
                                    class="hover:text-indigo-600 transition">{{ $project->name }}</a>
                             </h3>
                             <p class="mt-1 text-sm text-slate-600">{{ $project->description }}</p>
+                            @if ($project->date)
+                                <p class="mt-1.5 flex items-center gap-1.5 text-xs text-slate-500">
+                                    <svg class="h-4 w-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 0 1 2.25-2.25h13.5A2.25 2.25 0 0 1 21 7.5v11.25m-18 0A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75m-18 0v-7.5A2.25 2.25 0 0 1 5.25 9h13.5A2.25 2.25 0 0 1 21 9v7.5" />
+                                    </svg>
+                                    <span>Date: {{ $project->date->format('M d, Y') }}</span>
+                                </p>
+                            @endif
                         </div>
                     </div>
 

@@ -9,6 +9,7 @@ class Index extends Component
 {
     public string $name = '';
     public string $description = '';
+    public string $date = '';
     public ?int $editingId = null;
 
     public ?string $successMessage = null;
@@ -19,6 +20,7 @@ class Index extends Component
         return [
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:5000'],
+            'date' => ['nullable', 'date'],
         ];
     }
 
@@ -33,6 +35,7 @@ class Index extends Component
 
         $data = $this->validate();
         $data['description'] = $data['description'] ?: null;
+        $data['date'] = $data['date'] ?: null;
 
         if ($this->editingId) {
             Project::findOrFail($this->editingId)->update($data);
@@ -52,6 +55,7 @@ class Index extends Component
         $this->editingId = $project->id;
         $this->name = $project->name;
         $this->description = $project->description ?? '';
+        $this->date = $project->date ? $project->date->format('Y-m-d') : '';
 
         $this->reset('successMessage', 'errorMessage');
         $this->resetValidation();
@@ -84,7 +88,7 @@ class Index extends Component
 
     public function resetForm(): void
     {
-        $this->reset('name', 'description', 'editingId');
+        $this->reset('name', 'description', 'date', 'editingId');
         $this->resetValidation();
     }
 
